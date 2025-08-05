@@ -1,0 +1,8 @@
+javalang
+langchain
+langchain-community
+ollama
+faiss-cpu
+transformers
+torch
+sentence-transformers
