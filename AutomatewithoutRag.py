@@ -18,23 +18,20 @@ def GenerateTestWithoutRag(sourceCode):
 
     prompt = f"""	
 You are a Java testing assistant.
-Below is a JSON array of method‐metadata for the class under test. Your task is to generate a complete, idiomatic JUnit 5 unit test class for each following Java method:
-```json
+Below is the Abstract Syntaxt Tree of a java class. Your task is to generate a complete, idiomatic JUnit 5 unit test class for each Public Java method in the class:
+```
 {json_tree_str}
 ```
 Rules:
 - Use @Test from JUnit 5.
-- Resolve all the dependencies. Use Mockito (@Mock, Mockito.when(...), verify(...)) for all dependencies.
-- Use @BeforeEach for setting up required preconditions before each test method And @AfterEach for cleanup. Use @BeforeAll (static) if setup is required once before all tests.
+- Create Test for Public method Only.
+- Test Class name will end with "ClassunderTest"+Test.
+- Resolve the dependencies.
 - Instantiate the class under test using proper constructor.
-- For each invocation:
-Stub its behavior (when(mock.member(args)).thenReturn(...) for non-void; doNothing().when(...) and verify mehtod call for void ).
 - Use Arrange-Act-Assert format.
-  -Arrange: Set up inputs, mocks, or stubs.
-  -Act: Call the method under test.
-  -Assert:  Verify the results.
 - Make all test methods public.
-- Import only what’s necessary: JUnit 5, Mockito, and the class under test.
+- Make the test class public.
+- Import only what is necessary.
 - Return only a complete Java test class, no explanation.
 - Return Only Code in Response, no other text.
 """
@@ -42,7 +39,8 @@ Stub its behavior (when(mock.member(args)).thenReturn(...) for non-void; doNothi
 # ...existing code...
 
 # Use only Ollama (no RAG)
-    response = ollama.generate(model="codellama", prompt=prompt)
+    # response = ollama.generate(model="codellama", prompt=prompt)
+    response = ollama.generate(model="deepseek-coder", prompt=prompt)
     java_test_code = response['response']
 
     print("Generated JUnit test cases successfully. Now saving to file...")
